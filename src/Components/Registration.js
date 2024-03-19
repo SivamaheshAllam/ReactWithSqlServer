@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import {
@@ -32,12 +33,7 @@ function Registration() {
   const [centredModal, setCentredModal] = useState(false);
   const toggleOpen = () => setCentredModal(!centredModal);
 
-  // const validationSchema = yup.object().shape({
-  //   username: yup.string().required("username is requireddd"),
-  //   email: yup.string().email("only accepts an email").required("Email is required"),
-  //   // .email("only accepts an email"),
-  //   termsagreed: yup.bool().oneOf([true], "Accept Ts & Cs is required"),
-  // });
+  let navigate=useNavigate()
 
   let formOptions = { resolver: yupResolver() };
   let form = useForm({
@@ -53,25 +49,7 @@ function Registration() {
   } = useForm({
     mode: "onBlur",
   });
-  // console.log("Errorrrs", errors);
   let submitRegistration = async (data) => {
-    console.log(data);
-   
-
-    // if (checkboxRef.current.checked === true) {
-    //   checkboxChecked = 1;
-    // } else if (checkboxRef.current.checked === false) {
-    //   checkboxChecked = 0;
-    // }
-
-    // let formData = {
-    //   username: userNameRef.current?.value,
-    //   email: userEmailRef.current?.value,
-    //   password: passwordRef.current?.value,
-    //   repeatpassword: repeatPasswordRef.current?.value,
-    //   termsagreed: checkboxChecked,
-    // };
-
     try {
       let response = await userRegitration(data);
       if (response.data.status === "Failure") {
@@ -89,31 +67,19 @@ function Registration() {
     }
     reset();
   };
+
   let handleLoginSubmit= async (loginData)=>{
-    console.log(loginData)
     try {
       let response=await userLogin(loginData);
-      console.log("response",response)
+      if(response.data.status==='Success'){
+        localStorage.setItem("Token",response.data.data.token)
+        navigate('/dashboard', {state:response.data.data})
+      }
       
     } catch (error) {
       
     }
   }
-
-  
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault(); // Prevent the default form submission behavior
-
-  //   const form = event.currentTarget;
-  //   if (form.checkValidity() === false) {
-  //     event.stopPropagation();
-  //     setValidated(true); // Assuming you want to display validation messages on submit attempt
-  //   } else {
-  //     setValidated(true);
-  //     await submitRegistration(); // Assuming userRegistration is an asynchronous function
-  //   }
-  // };
 
   return (
     <div>
