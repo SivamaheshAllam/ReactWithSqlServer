@@ -26,6 +26,7 @@ sql.connect(connection, (err) => {
   });
 const upload = multer({ storage: storage });
 
+
 router.post("/registration", upload.none(), async (req, res) => {
     try {
         const { username, email, password, repeatpassword, termsagreed } = req.body;
