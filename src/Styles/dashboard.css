@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+.dashboard-card{
+    background-color: #e5e5e5;
+    border: 0px;
+}
+.dashboard-card2{
+    margin: 10px 20px 10px 20px !important;
+    height: 120px;
+    border: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+/* .items-container{
+    margin-top: -15px;
+} */
+.item-container {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent items from wrapping to the next line */
+  }
+  
+  .item-row {
+    display: inline-flex; /* Display items in a row */
+    gap: 10px; /* Add space between items */
+  }
+  
+.img-div{
+    display: flex;
+    justify-content: center;
+}
+.title-div{
+    display: flex;
+    justify-content: center;
+}
