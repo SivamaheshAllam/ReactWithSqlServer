@@ -6,6 +6,8 @@ var sql = require("mssql/msnodesqlv8");
 // let cors = require("cors");
 let multer = require("multer");
 let connection=require('../DB/DB');
+let jwt=require('jsonwebtoken');
+const verifyToken = require('../Middlewares/JWTAccessClass');
 
 sql.connect(connection, (err) => {
     if (err) {
@@ -25,6 +27,7 @@ sql.connect(connection, (err) => {
     },
   });
 const upload = multer({ storage: storage });
+
 
 router.post("/registration", upload.none(), async (req, res) => {
     try {
@@ -80,7 +83,9 @@ router.post('/login', upload.none(), async (req, res) => {
 
       const isValidPassword = await bcrypt.compare(loginPassword, result.recordset[0]?.password);
       if (isValidPassword) {
-        return res.status(200).json({ status: 'Success', data: result.recordset[0] });
+        const token = jwt.sign({ userId: result.recordset[0]?.id }, 'M416', { expiresIn: '1h' });
+        console.log(token)
+        return res.status(200).json({ status: 'Success', data: {data:result.recordset[0], token:token} });
       } else {
         return res.status(400).json({ status: 'Failed', data: 'Incorrect Password' });
       }
@@ -91,5 +96,7 @@ router.post('/login', upload.none(), async (req, res) => {
   }
 });
 
-
-  module.exports=router;
+router.get('/employees',verifyToken, (req, res)=>{
+res.json("Employees data")
+})
+module.exports=router;
