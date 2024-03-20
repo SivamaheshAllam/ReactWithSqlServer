@@ -9,12 +9,23 @@
     border: 0px;
 }
 .dashboard-card2{
+    /* margin: 10px 20px 10px 20px !important; */
+    overflow: hidden;
+    height: 126px;
+    border: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    /* box-shadow: 5px 5px 5px slategrey; */
+}
+.dashboard-card3{
     margin: 10px 20px 10px 20px !important;
     height: 120px;
     border: 0px;
     display: flex;
     flex-direction: row;
     justify-content: center;
+    /* box-shadow: 5px 5px 5px slategrey; */
 }
 /* .items-container{
     margin-top: -15px;
@@ -37,3 +48,6 @@
     display: flex;
     justify-content: center;
 }
+/* .container::card dashboard-card2 .scroll-horizontal scroll{
+    position: absolute !important;
+} */

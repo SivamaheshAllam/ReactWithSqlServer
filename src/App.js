@@ -6,13 +6,19 @@ import Footer from './Components/Footer';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import NotFound from './Components/NotFound';
 import Dashboard from './Components/Dashboard';
+import DashboardHeader from './Components/DashboardHeader';
 
 function App() {
   
   return (
     <Router>
       <div>
-        <Header />
+        {/* <Header /> */}
+        {/* {window.location.pathname !== '/dashboard' && <Header />} */}
+        <Routes>
+          <Route path="/dashboard/*" element={<DashboardHeader />} />
+          <Route path="/*" element={<Header />} />
+        </Routes>
         <Routes>
           <Route path="/" element={<Registration />} />
           <Route path="/dashboard" element={<Dashboard />} />
