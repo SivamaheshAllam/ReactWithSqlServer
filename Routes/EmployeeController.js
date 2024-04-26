@@ -3,21 +3,23 @@ let express=require('express')
 const router=express.Router();
 var sql = require("mssql/msnodesqlv8");
 
-router.get('/employees',verifyToken, async (req, res)=>{
+router.get('/employees', verifyToken, async (req, res) => {
     try {
-       let query="select * from tblregistration"
-       sql.query(query, (err, result)=>{
-        if(err){
-            res.json({status:"Failed", details:err})
-        }
-        else{
-            res.json({status:"Success", details:result.recordsets[0]})
-        }
-       })
+        let query = "select * from tblregistration";
+        const result = await new Promise((resolve, reject) => {
+            sql.query(query, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+        res.json({ status: "Success", details: result.recordsets[0] });
     } catch (error) {
-        res.json({status:"Failed", details:error})
-        console.log(error)
+        res.json({ status: "Failed", details: error });
+        console.log(error);
     }
-    })
+});
 
 module.exports=router;
