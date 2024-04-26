@@ -4,10 +4,9 @@ const moment = require("moment-timezone");
 let bcrypt=require('bcrypt')
 var sql = require("mssql/msnodesqlv8");
 // let cors = require("cors");
-let multer = require("multer");
 let connection=require('../DB/DB');
+let upload= require('../Middlewares/Upload')
 let jwt=require('jsonwebtoken');
-const verifyToken = require('../Middlewares/JWTAccessClass');
 
 sql.connect(connection, (err) => {
     if (err) {
@@ -17,17 +16,7 @@ sql.connect(connection, (err) => {
     }
   });
 
-  const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, "uploads");
-    },
-    filename: (req, file, cb) => {
-      console.log(file);
-      cb(null, Date.now() + "-" + file.originalname);
-    },
-  });
-const upload = multer({ storage: storage });
-
+  
 
 router.post("/registration", upload.none(), async (req, res) => {
     try {
@@ -96,7 +85,5 @@ router.post('/login', upload.none(), async (req, res) => {
   }
 });
 
-router.get('/employees',verifyToken, (req, res)=>{
-res.json("Employees data")
-})
+
 module.exports=router;

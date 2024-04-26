@@ -28,7 +28,7 @@ export const getEmployees = async () => {
     const headers = {
       Authorization: token,
     };
-    const response = await axios.get(`/employees`, { headers });
+    const response = await axios.get(`EmployeeController/employees`, { headers });
     return response;
   } catch (error) {
     return error;

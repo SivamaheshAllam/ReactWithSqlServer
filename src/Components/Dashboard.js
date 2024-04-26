@@ -1,10 +1,19 @@
 import { MDBCard, MDBCardBody } from "mdb-react-ui-kit";
-import React from "react";
+import React, { useEffect } from "react";
 import "../Styles/dashboard.css";
 import HorizontalScroll from "react-scroll-horizontal";
 import Categoryitems from "./Categoryitems";
+import { getEmployees } from "../Api/ApiServices";
 
 function Dashboard() {
+
+  let getEmployeesData= async()=>{
+    let response= await getEmployees();
+    console.log(response)
+  }
+  useEffect(()=>{
+    getEmployeesData();
+  }, [])
   return (
     <div>
       <div>
