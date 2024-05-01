@@ -3,7 +3,6 @@ let router=express.Router();
 const moment = require("moment-timezone");
 let bcrypt=require('bcrypt')
 var sql = require("mssql/msnodesqlv8");
-// let cors = require("cors");
 let connection=require('../DB/DB');
 let upload= require('../Middlewares/Upload')
 let jwt=require('jsonwebtoken');
@@ -96,6 +95,7 @@ router.post('/login', upload.none(), async (req, res) => {
         logger.info(`User registered successfully:${result.recordset[0].username}`)
         return res.status(200).json({ status: 'Success', data: {data:result.recordset[0], token:token} });
       } else {
+        logger.error(`Error in user Login: Incorrect Password`)
         return res.status(400).json({ status: 'Failed', data: 'Incorrect Password' });
       }
     });
