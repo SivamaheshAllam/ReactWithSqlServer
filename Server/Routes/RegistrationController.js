@@ -54,7 +54,26 @@ router.post("/registration", upload.none(), async (req, res) => {
     }
 });
 
+router.post('/CheckEmailExists/:email', upload.none(), async (req, res) => {
+  try {
+    const email = req.params.email; 
 
+    const sqlQuery = `SELECT * FROM tblregistration WHERE email ='${email}'`;
+    sql.query(sqlQuery, (err, result) => {
+      if (err) {
+        res.status(500).json({ status: "Failed", details: err });
+      } else {
+        if (result && result.recordset.length > 0) {
+          res.json({ status: 'Success', details: "Email already exists", responseCode:false });
+        } else {
+          res.json({ status: "Success", details: "Email available", responseCode:true});
+        }
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ status: "Failed", details: error });
+  }
+});
 router.post('/login', upload.none(), async (req, res) => {
   try {
     const { loginEmail, loginPassword } = req.body;

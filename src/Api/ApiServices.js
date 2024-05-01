@@ -23,10 +23,20 @@ export const userLogin = async (formData) => {
   }
 };
 
+export const checkEmailExists= async(email)=>{
+let emailValue=email
+  try {
+    const response=await axios.post(`/CheckEmailExists/${emailValue}`)
+    return response;
+  } catch (error) {
+    return error;
+  }
+}
+
 export const getEmployees = async () => {
   try {
     const headers = {
-      Authorization: token,
+      Authorization: localStorage.getItem("Token"),
     };
     const response = await axios.get(`EmployeeController/employees`, { headers });
     return response;

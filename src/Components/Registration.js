@@ -25,7 +25,7 @@ import {
   MDBModalBody,
 } from "mdb-react-ui-kit";
 import "../Styles/RegisterStyles.css";
-import { userLogin, userRegitration } from "../Api/ApiServices";
+import { userLogin, userRegitration, checkEmailExists } from "../Api/ApiServices";
 import toast, { Toaster } from "react-hot-toast";
 
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -39,7 +39,7 @@ function Registration() {
   let form = useForm({
     formOptions,
   });
-  let { register, control, handleSubmit, formState, setValue, watch, reset } = form;
+  let { register, control, handleSubmit, formState, setValue, watch, reset, setError,clearErrors } = form;
   let { errors } = formState;
 
   const {
@@ -75,10 +75,36 @@ function Registration() {
         localStorage.setItem("Token",response.data.data.token)
         navigate('/dashboard', {state:response.data.data})
       }
-      
     } catch (error) {
-      
+      console.log(error)
     }
+  }
+
+  let checkUserEmailExists= async(e)=>{
+    const email=e.target.value;
+    console.log(errors)
+    if(email !== null && email !== undefined && email !=='' ){
+      try {
+        let response=await checkEmailExists(email)
+        console.log(response.data.responseCode)
+        let code=response.data.responseCode
+        if(code===false){
+          setError('email', { type: 'custom', message: 'Email id already exists' });
+          console.log(errors)
+        }
+        else if(code===true)
+        {
+          clearErrors('email');
+        }
+      } catch (error) {
+        
+      }
+          
+    }
+    else{
+      // clearErrors()
+    }
+  
   }
 
   return (
@@ -270,6 +296,7 @@ function Registration() {
                               "Entered value does not match email format",
                           },
                         })}
+                        onChange={checkUserEmailExists}
                       />
                       {errors.email && (
                         <span className="invalid-feedback d-block">
