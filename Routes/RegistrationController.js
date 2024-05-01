@@ -7,7 +7,7 @@ var sql = require("mssql/msnodesqlv8");
 let connection=require('../DB/DB');
 let upload= require('../Middlewares/Upload')
 let jwt=require('jsonwebtoken');
-let logger= require('../Middlewares/Logger')
+let logger= require('../Logs/Logger')
 
 sql.connect(connection, (err) => {
     if (err) {
@@ -16,8 +16,6 @@ sql.connect(connection, (err) => {
       console.log("connected");
     }
   });
-
-  
 
 router.post("/registration", upload.none(), async (req, res) => {
     try {
