@@ -7,6 +7,7 @@ var sql = require("mssql/msnodesqlv8");
 let connection=require('../DB/DB');
 let upload= require('../Middlewares/Upload')
 let jwt=require('jsonwebtoken');
+let logger= require('../Middlewares/Logger')
 
 sql.connect(connection, (err) => {
     if (err) {
@@ -43,13 +44,14 @@ router.post("/registration", upload.none(), async (req, res) => {
 
         sql.query(query, (err, result) => {
             if (err) {
-                console.error(err);
+                logger.error(`Error in user registration: ${err.message}`);
                 return res.status(500).json({ status: "Failure", error: "Internal Server Error" });
             }
+            logger.info(`User registered successfully: ${username}`);
             res.status(200).json({ status: "Success", data: result });
         });
     } catch (error) {
-        console.error(error);
+        logger.error(`Error in user registration: ${error.message}`);
         res.status(500).json({ status: "Failure", error: "Internal Server Error" });
     }
 });
@@ -81,25 +83,26 @@ router.post('/login', upload.none(), async (req, res) => {
 
     sql.query(sqlQuery, async (err, result) => {
       if (err) {
-        console.error('Error executing SQL query:', err);
+        logger.error(`Error in user Login: ${err.message}`);
         return res.status(500).json({ status: 'Failed', data: 'Internal Server Error' });
       }
 
       if (result.recordset.length === 0) {
+        logger.error(`Error in user Login: Email id not Found`);
         return res.status(400).json({ status: 'Failed', data: 'Email id not Found' });
       }
 
       const isValidPassword = await bcrypt.compare(loginPassword, result.recordset[0]?.password);
       if (isValidPassword) {
         const token = jwt.sign({ userId: result.recordset[0]?.id }, 'M416', { expiresIn: '1h' });
-        console.log(token)
+        logger.info(`User registered successfully:${result.recordset[0].username}`)
         return res.status(200).json({ status: 'Success', data: {data:result.recordset[0], token:token} });
       } else {
         return res.status(400).json({ status: 'Failed', data: 'Incorrect Password' });
       }
     });
   } catch (error) {
-    console.error('Error in login route:', error);
+    logger.error(`Error in login route:${error}`);
     return res.status(500).json({ status: 'Failed', data: 'Internal Server Error' });
   }
 });

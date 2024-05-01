@@ -3,7 +3,7 @@ import axios from "axios";
 // let baseURL = "http://localhost:4444";
 axios.defaults.baseURL = "http://localhost:4444";
 
-let token = localStorage.getItem("Token");
+// let token = localStorage.getItem("Token");
 
 export const userRegitration = async (formData) => {
   try {
