@@ -18,3 +18,7 @@
 {"level":"error","message":"Error in user Login: Email id not Found"}
 {"level":"error","message":"Error in user Login: Email id not Found"}
 {"level":"info","message":"User registered successfully:SivamaheshAllam"}
+{"level":"info","message":"Error in user Login: Incorrect Password"}
+{"level":"info","message":"Error in user Login: Incorrect Password"}
+{"level":"error","message":"Error in user Login: Incorrect Password"}
+{"level":"info","message":"User registered successfully:SivamaheshAllam"}
